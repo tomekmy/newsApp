@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../settings/settings_view.dart';
 import 'news_item.dart';
@@ -43,7 +44,7 @@ class SampleItemListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('News'),
+        title: Text(AppLocalizations.of(context)!.news),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),

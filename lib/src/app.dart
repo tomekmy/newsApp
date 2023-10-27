@@ -3,6 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'news_feature/news_item.dart';
 import 'news_feature/news_item_details_view.dart';
@@ -10,21 +11,21 @@ import 'news_feature/news_item_list_view.dart';
 import 'settings/settings_controller.dart';
 import 'settings/settings_view.dart';
 
+String apiKey = dotenv.get('API_KEY');
+
 Future<List<NewsItem>> fetchNews() async {
   final response = await http
-      .get(Uri.parse('https://newsapi.org/v2/everything?q=apple&from=2023-10-25&to=2023-10-25&sortBy=popularity&apiKey=71f1835c479742558bacc57929749932'));
+      .get(Uri.parse('https://newsapi.org/v2/everything?q=apple&from=2023-10-25&to=2023-10-25&sortBy=popularity&apiKey=$apiKey'));
 
   if (response.statusCode == 200) {
     List<NewsItem> news = [];
     final res = jsonDecode(response.body)['articles'];
     news.addAll(List<NewsItem>.from(
       (res).map((item) => NewsItem.fromJson(item))));
-    print(news);
+    print(res);
     return news;
   } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load album');
+    throw Exception('Failed to load news');
   }
 }
 
@@ -86,15 +87,7 @@ class _MyAppState extends State<MyApp> {
       listenable: widget.settingsController,
       builder: (BuildContext context, Widget? child) {
         return MaterialApp(
-          // Providing a restorationScopeId allows the Navigator built by the
-          // MaterialApp to restore the navigation stack when a user leaves and
-          // returns to the app after it has been killed while running in the
-          // background.
           restorationScopeId: 'app',
-
-          // Provide the generated AppLocalizations to the MaterialApp. This
-          // allows descendant Widgets to display the correct translations
-          // depending on the user's locale.
           localizationsDelegates: const [
             AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
@@ -106,23 +99,11 @@ class _MyAppState extends State<MyApp> {
             Locale('pl')
           ],
 
-          // Use AppLocalizations to configure the correct application title
-          // depending on the user's locale.
-          //
-          // The appTitle is defined in .arb files found in the localization
-          // directory.
           onGenerateTitle: (BuildContext context) =>
               AppLocalizations.of(context)!.appTitle,
-
-          // Define a light and dark color theme. Then, read the user's
-          // preferred ThemeMode (light, dark, or system default) from the
-          // SettingsController to display the correct theme.
           theme: ThemeData(),
           darkTheme: ThemeData.dark(),
           themeMode: widget.settingsController.themeMode,
-
-          // Define a function to handle named routes in order to support
-          // Flutter web url navigation and deep linking.
           onGenerateRoute: (RouteSettings routeSettings) {
             return MaterialPageRoute<void>(
               settings: routeSettings,

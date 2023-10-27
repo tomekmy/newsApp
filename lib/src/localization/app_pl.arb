@@ -1,6 +1,8 @@
 {
   "appTitle": "News App",
-  "systemTheme": "Tryb",
+  "news": "Wiadomości",
+  "theme": "Motyw",
+  "systemTheme": "Systemowy",
   "lightTheme": "Jasny",
   "darkTheme": "Ciemny"
 }
