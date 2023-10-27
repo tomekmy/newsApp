@@ -6,7 +6,9 @@ import 'news_item.dart';
 import 'news_item_details_view.dart';
 
 class NewsItemListView extends StatelessWidget {
-  const NewsItemListView(this.news, this.selectNews, {
+  const NewsItemListView(
+    this.news,
+    this.selectNews, {
     super.key,
   });
 
@@ -36,18 +38,22 @@ class NewsItemListView extends StatelessWidget {
           final item = news[index];
 
           return ListTile(
-            title: Text(item.title),
-            leading: const CircleAvatar(
-              foregroundImage: AssetImage('assets/images/flutter_logo.png'),
-            ),
-            onTap: () {
-              selectNews(index);
-              Navigator.restorablePushNamed(
-                context,
-                NewsItemDetailsView.routeName,
-              );
-            }
-          );
+              title: Text(item.title),
+              leading: item.urlToImage.isEmpty
+                  ? const CircleAvatar(
+                      foregroundImage:
+                          AssetImage('assets/images/flutter_logo.png'),
+                    )
+                  : CircleAvatar(
+                      foregroundImage: NetworkImage(item.urlToImage),
+                    ),
+              onTap: () {
+                selectNews(index);
+                Navigator.restorablePushNamed(
+                  context,
+                  NewsItemDetailsView.routeName,
+                );
+              });
         },
       ),
     );

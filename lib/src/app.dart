@@ -15,7 +15,7 @@ String apiKey = dotenv.get('API_KEY');
 
 Future<List<NewsItem>> fetchNews() async {
   final response = await http
-      .get(Uri.parse('https://newsapi.org/v2/top-headlines?country=pl&apiKey=$apiKey'));
+      .get(Uri.parse('https://newsapi.org/v2/top-headlines?country=us&apiKey=$apiKey'));
 
   if (response.statusCode == 200) {
     List<NewsItem> news = [];
