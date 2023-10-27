@@ -4,5 +4,6 @@
   "theme": "Theme",
   "systemTheme": "System",
   "lightTheme": "Light",
-  "darkTheme": "Dark"
+  "darkTheme": "Dark",
+  "linkToArticle": "Link to article"
 }

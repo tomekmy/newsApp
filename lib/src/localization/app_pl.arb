@@ -4,5 +4,6 @@
   "theme": "Motyw",
   "systemTheme": "Systemowy",
   "lightTheme": "Jasny",
-  "darkTheme": "Ciemny"
+  "darkTheme": "Ciemny",
+  "linkToArticle": "Link do artykułu"
 }
