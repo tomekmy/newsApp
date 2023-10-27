@@ -1,27 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/src/news_feature/news_item.dart';
 
 class NewsItemDetailsView extends StatelessWidget {
-  const NewsItemDetailsView({super.key, required this.author, required this.title, required this.urlToImage, required this.publishedAt, required this.content, required this.id});
+  const NewsItemDetailsView(this.news, {super.key});
 
-  final String id, author, title, urlToImage, publishedAt, content;
+  final NewsItem news;
   static const routeName = '/news_item';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(news.title),
       ),
       body: Container(
         padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title),
+            Text(news.title),
             const SizedBox(height: 15,),
-            Text(author),
+            Text(news.author),
             const SizedBox(height: 10,),
-            Text(content),
+            Text(news.content),
           ],
         ),
       ),

@@ -15,14 +15,13 @@ String apiKey = dotenv.get('API_KEY');
 
 Future<List<NewsItem>> fetchNews() async {
   final response = await http
-      .get(Uri.parse('https://newsapi.org/v2/everything?q=apple&from=2023-10-25&to=2023-10-25&sortBy=popularity&apiKey=$apiKey'));
+      .get(Uri.parse('https://newsapi.org/v2/top-headlines?country=pl&apiKey=$apiKey'));
 
   if (response.statusCode == 200) {
     List<NewsItem> news = [];
     final res = jsonDecode(response.body)['articles'];
     news.addAll(List<NewsItem>.from(
       (res).map((item) => NewsItem.fromJson(item))));
-    print(res);
     return news;
   } else {
     throw Exception('Failed to load news');
@@ -33,56 +32,38 @@ Future<List<NewsItem>> fetchNews() async {
 class MyApp extends StatefulWidget {
   const MyApp({
     super.key,
-    required this.settingsController,
-    
-    this.news = const [
-      NewsItem(
-        id: '1',
-        author: 'Test',
-        title: 'Test1',
-        urlToImage: 'Test',
-        publishedAt: 'Test',
-        content: 'Test'
-      ),
-      NewsItem(
-        id: '2',
-        author: 'Test',
-        title: 'Test2',
-        urlToImage: 'Test',
-        publishedAt: 'Test',
-        content: 'Test'
-      ),
-      NewsItem(
-        id: '3',
-        author: 'Test',
-        title: 'Test3',
-        urlToImage: 'Test',
-        publishedAt: 'Test',
-        content: 'Test'
-      )
-    ],
+    required this.settingsController
   });
 
   final SettingsController settingsController;
-  final List<NewsItem> news;
 
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
+  late List<NewsItem> newsList = [];
+  late int selectedNews;
+
   @override
   void initState() {
     super.initState();
-    fetchNews();
+    fetchNews().then((result) {
+      setState(() {
+        newsList = result;
+      });
+    });
   }
+
+  void selectNews(int idx) {
+    setState(() {
+      selectedNews = idx;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    // Glue the SettingsController to the MaterialApp.
-    //
-    // The ListenableBuilder Widget listens to the SettingsController for changes.
-    // Whenever the user updates their settings, the MaterialApp is rebuilt.
     return ListenableBuilder(
       listenable: widget.settingsController,
       builder: (BuildContext context, Widget? child) {
@@ -112,17 +93,10 @@ class _MyAppState extends State<MyApp> {
                   case SettingsView.routeName:
                     return SettingsView(controller: widget.settingsController);
                   case NewsItemDetailsView.routeName:
-                    return const NewsItemDetailsView(
-                      id: '2',
-                      author: 'Test',
-                      title: 'Test2',
-                      urlToImage: 'Test',
-                      publishedAt: 'Test',
-                      content: 'Test'
-                    );
-                  case SampleItemListView.routeName:
+                    return NewsItemDetailsView(newsList[selectedNews]);
+                  case NewsItemListView.routeName:
                   default:
-                    return const SampleItemListView();
+                    return NewsItemListView(newsList, selectNews);
                 }
               },
             );
