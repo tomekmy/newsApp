@@ -6,7 +6,6 @@ import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'news_feature/news_item.dart';
-import 'news_feature/news_item_details_view.dart';
 import 'news_feature/news_item_list_view.dart';
 import 'settings/settings_controller.dart';
 import 'settings/settings_view.dart';
@@ -92,8 +91,6 @@ class _MyAppState extends State<MyApp> {
                 switch (routeSettings.name) {
                   case SettingsView.routeName:
                     return SettingsView(controller: widget.settingsController);
-                  case NewsItemDetailsView.routeName:
-                    return NewsItemDetailsView(newsList[selectedNews]);
                   case NewsItemListView.routeName:
                   default:
                     return NewsItemListView(newsList, selectNews);

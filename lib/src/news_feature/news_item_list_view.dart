@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:news_app/src/utilities/utils.dart';
 
 import '../settings/settings_view.dart';
 import 'news_item.dart';
-import 'news_item_details_view.dart';
 
 class NewsItemListView extends StatelessWidget {
   const NewsItemListView(
@@ -37,25 +37,47 @@ class NewsItemListView extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           final item = news[index];
 
-          return ListTile(
-              title: Text(item.title),
-              leading: item.urlToImage.isEmpty
-                  ? const CircleAvatar(
-                      foregroundImage:
-                          AssetImage('assets/images/flutter_logo.png'),
+          return Column(
+            children: [
+              item.urlToImage.isEmpty
+                  ? const Image(
+                      image: AssetImage('assets/images/flutter_logo.png'),
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: 200,
                     )
-                  : CircleAvatar(
-                      foregroundImage: NetworkImage(item.urlToImage),
+                  : Image(
+                      image: NetworkImage(item.urlToImage),
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: 200,
                     ),
-              onTap: () {
-                selectNews(index);
-                Navigator.restorablePushNamed(
-                  context,
-                  NewsItemDetailsView.routeName,
-                );
-              });
+              const SizedBox(
+                height: 5,
+              ),
+              Text(item.title),
+              const SizedBox(
+                height: 10,
+              )
+            ],
+          );
+
+          // return ListTile(
+          //     title: Text(item.title),
+          //     leading: item.urlToImage.isEmpty
+          //         ? const CircleAvatar(
+          //             foregroundImage:
+          //                 AssetImage('assets/images/flutter_logo.png'),
+          //           )
+          //         : CircleAvatar(
+          //             foregroundImage: NetworkImage(item.urlToImage),
+          //           ),
+          //     onTap: () {
+          //       openUrl(item.url);
+          //     });
         },
       ),
     );
+    ;
   }
 }
