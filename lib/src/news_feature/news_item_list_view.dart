@@ -33,9 +33,13 @@ class NewsItemListView extends StatelessWidget {
       ),
       body: ListView.builder(
         restorationId: 'newsItemDetailsView',
+        cacheExtent: 9999,
         itemCount: news.length,
         itemBuilder: (BuildContext context, int index) {
           final item = news[index];
+          if (item.title.isEmpty || item.title == '[Removed]') {
+            return const SizedBox.shrink();
+          }
 
           return Column(
             children: [
@@ -55,9 +59,20 @@ class NewsItemListView extends StatelessWidget {
               const SizedBox(
                 height: 5,
               ),
-              Text(item.title),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GestureDetector(
+                    onTap: () {
+                      openUrl(item.url);
+                    },
+                    child: Text(
+                      item.title,
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.bold),
+                    )),
+              ),
               const SizedBox(
-                height: 10,
+                height: 15,
               )
             ],
           );
